@@ -116,7 +116,7 @@ public:
                 detail::sockaddr_type* _addr = nullptr,
                 int* _addrlen = nullptr) const
     {
-        detail::socket_type tmp = detail::accept(socket(), _addr, _addrlen);
+        detail::socket_type tmp = detail::accept(socket(), _addr, (detail::socklen_t*)_addrlen);
         if(tmp != detail::invalid_socket) {
             _socket.socket_ = tmp;
             return true;
@@ -132,7 +132,7 @@ public:
 private:
     static bool is_retval_valid(int _retval)
     {
-        return _retval == NO_ERROR;
+        return _retval == 0;
     }
 
     bool bool_error(bool _is_valid, error& _error) const

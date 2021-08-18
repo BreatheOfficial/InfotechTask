@@ -1,5 +1,6 @@
 #pragma once
 
+#include "detail/socket_types.hpp"
 #include "windows/wsa_handler.hpp"
 
 #include <vector>

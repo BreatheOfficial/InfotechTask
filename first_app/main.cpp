@@ -11,9 +11,12 @@ public:
 
     task(const network::endpoint& _ep)
     {
+        std::cout << _ep.to_string() << '\n';
         network::tcp::ipv4::acceptor acceptor { _ep };
-        if( !acceptor.accept(socket_) )
+        if( !acceptor.accept(socket_) ) {
+            auto err = network::tcp::abstract_socket::last_error();
             throw std::runtime_error("Accept error, try again.");
+        }
     }
 
     ~task()

@@ -64,8 +64,7 @@ public:
 
     void from_bytes(const bytes_type& _bytes) noexcept
     {
-        addr_.S_un.S_un_b.s_b1 = _bytes[0]; addr_.S_un.S_un_b.s_b2 = _bytes[1];
-        addr_.S_un.S_un_b.s_b3 = _bytes[2]; addr_.S_un.S_un_b.s_b4 = _bytes[3];
+        detail::memcpy(&addr_, _bytes.data(), sizeof(addr_));
     }
 
     addr_type to_addr() const noexcept
@@ -86,8 +85,7 @@ public:
     bytes_type to_bytes() const
     {
         bytes_type bytes;
-        bytes[0] = addr_.S_un.S_un_b.s_b1; bytes[1] = addr_.S_un.S_un_b.s_b2;
-        bytes[2] = addr_.S_un.S_un_b.s_b3; bytes[3] = addr_.S_un.S_un_b.s_b4;
+        detail::memcpy(bytes.data(), &addr_, sizeof(addr_));
         return bytes;
     }
 
@@ -125,7 +123,7 @@ address_v4 make_address_v4(const char* _str) noexcept
 address_v4 make_address_v4(const char* _str, error& error_code) noexcept
 {
     address_v4::addr_type addr;
-    error_code = inet_pton(AF_INET, _str, &addr) != 1 ? WSAEINVAL : NO_ERROR;
+    error_code = inet_pton(AF_INET, _str, &addr) != 1 ? EINVAL : 0;
     return address_v4(addr);
 }
 

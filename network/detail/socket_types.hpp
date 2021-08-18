@@ -34,8 +34,10 @@ const int max_addr_v6_str_len = 256;
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <ifaddrs.h>
-
+#include <sys/un.h>
+#include <unistd.h>
 typedef int socket_type;
+const socket_type invalid_socket = -1;
 
 #if defined(INET_ADDRSTRLEN)
 const int max_addr_v4_str_len = INET_ADDRSTRLEN;
@@ -49,7 +51,6 @@ const int max_addr_v6_str_len = 256;
 #endif
 
 #endif
-
 typedef sockaddr sockaddr_type;
 struct socket_addr_type { short int sa_family; };
 typedef in_addr in4_addr_type;
@@ -67,11 +68,17 @@ enum class NetworkLayerProtocol : int {
     IPv6Protocol = AF_INET6,
 };
 
+#ifdef _WIN32
 enum class SocketType : int {
     TcpSocket = SOCK_STREAM,
     UdpSocket = SOCK_DGRAM,
 };
-
+#else
+enum class SocketType : int {
+    TcpSocket = network::detail::SOCK_STREAM,
+    UdpSocket = network::detail::SOCK_DGRAM,
+};
+#endif
 enum class SocketProtocol : int {
     AutoSocketProtocol = 0
 };

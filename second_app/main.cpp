@@ -10,6 +10,7 @@ public:
     task(const endpoint_type& _ep)
         : socket_(_ep)
     {
+        std::cout << _ep.to_string() << '\n';
         if( !socket_.connect() )
             throw std::runtime_error("Connect error, try again.");
     }
@@ -29,6 +30,7 @@ private:
 
 int main()
 {
+    // Virtual machine:
     task t({ network::address_v4::loopback(), 1234 });
     t.run();
     return 0;

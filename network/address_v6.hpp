@@ -47,10 +47,10 @@ public:
 
     void from_bytes(const bytes_type& _bytes) noexcept
     {
-        memcpy(&addr_.s6_addr, _bytes.data(), sizeof(addr_type));
+        detail::memcpy(&addr_.s6_addr, _bytes.data(), sizeof(addr_type));
     }
 
-    void scope_id(uint32_t _scope_id) noexcept
+    void scope_id(unsigned _scope_id) noexcept
     {
         scope_id_ = _scope_id;
     }
@@ -63,11 +63,11 @@ public:
     bytes_type to_bytes() const
     {
         bytes_type bytes;
-        memcpy(bytes.data(), &addr_.s6_addr, 16);
+        detail::memcpy(bytes.data(), &addr_.s6_addr, 16);
         return bytes;
     }
 
-    uint32_t scope_id() const noexcept
+    unsigned scope_id() const noexcept
     {
         return scope_id_;
     }
@@ -90,35 +90,35 @@ public:
     static address_v6 loopback()
     {
         address_v6 addr;
-        addr.addr_.u.Byte[15] = 1;
+        addr.addr_.s6_addr[15] = 1;
         return addr;
     }
 
 private:
     addr_type addr_;
-    uint32_t scope_id_;
+    unsigned scope_id_;
 }; // class address_v6
 
-address_v6 make_address_v6(const char* _str, uint32_t _scope_id = 0) noexcept
+address_v6 make_address_v6(const char* _str, unsigned _scope_id = 0) noexcept
 {
     address_v6::addr_type addr;
     inet_pton(AF_INET6, _str, &addr);
     return address_v6(addr, _scope_id);
 }
 
-address_v6 make_address_v6(const char* _str, error& error_code, uint32_t _scope_id = 0) noexcept
+address_v6 make_address_v6(const char* _str, error& error_code, unsigned _scope_id = 0) noexcept
 {
     address_v6::addr_type addr;
     error_code = inet_pton(AF_INET6, _str, &addr) != 1;
     return address_v6(addr, _scope_id);
 }
 
-address_v6 make_address_v6(const std::string& _str, uint32_t _scope_id = 0) noexcept
+address_v6 make_address_v6(const std::string& _str, unsigned _scope_id = 0) noexcept
 {
     return make_address_v6(_str.c_str(), _scope_id);
 }
 
-address_v6 make_address_v6(const std::string& _str, error& error_code, uint32_t _scope_id = 0) noexcept
+address_v6 make_address_v6(const std::string& _str, error& error_code, unsigned _scope_id = 0) noexcept
 {
     return make_address_v6(_str.c_str(), error_code, _scope_id);
 }
