@@ -10,7 +10,6 @@ public:
     task(const endpoint_type& _ep)
         : socket_(_ep)
     {
-        std::cout << _ep.to_string() << '\n';
         if( !socket_.connect() )
             throw std::runtime_error("Connect error, try again.");
     }

@@ -54,6 +54,14 @@ public:
     {
         if( is_open() )
             return true;
+        int reuse = 1;
+        //  I have problems with "Address already use" error on Linux
+        //  On win all is ok without this piece
+#ifndef __WIN32
+        detail::setsockopt(socket(), SOL_SOCKET, SO_REUSEADDR, (const char*)&reuse, sizeof(reuse));
+        detail::setsockopt(socket(), SOL_SOCKET, SO_REUSEPORT, (const char*)&reuse, sizeof(reuse));
+        //
+#endif
         if( !has_endpoint_ || !impl_.bind(endpoint_) || !impl_.listen(_n) )
             return false;
         is_open_ = true;

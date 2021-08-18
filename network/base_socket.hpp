@@ -35,7 +35,7 @@ public:
     base_socket(const base_socket& _other) noexcept = default;
 
 
-    virtual ~base_socket()
+    ~base_socket()
     {
         close();
     }

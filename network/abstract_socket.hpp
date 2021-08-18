@@ -19,6 +19,10 @@ public:
 
     virtual network::detail::socket_type socket() const = 0;
 
+    virtual ~abstract_socket()
+    {
+    }
+
     operator network::detail::socket_type() const
     {
         return socket();
